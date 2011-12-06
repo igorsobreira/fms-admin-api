@@ -1,4 +1,5 @@
-require_relative './base.rb'
+require_relative './base'
+require_relative '../client.rb'
 
 module FMSAdmin
   module Command
@@ -15,7 +16,8 @@ module FMSAdmin
       method_option :force, :aliases => "-f", :type => :boolean, :default => false, :desc => "Forces a refresh of the cached list of applications"
       method_option :verbose, :aliases => "-v", :type => :boolean, :default => true, :desc => "true displays all the applications under a virtual host; false displays the total number of applications"
       def list
-        puts "list #{options.inspect}"
+        client = FMSAdmin::Client.new(options.host, options.user, options.password)
+        puts client.get_apps
       end
 
       desc "add", "Adds a new application to the virtual host you are connected to by creating the required directory for the new application in the directory tree"
