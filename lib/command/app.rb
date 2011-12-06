@@ -1,17 +1,9 @@
-#!/usr/bin/env ruby
-
-require 'thor'
-require 'thor/group'
+require_relative './base.rb'
 
 module FMSAdmin
   module Command
 
-    class App < Thor
-
-      def self.auth_options
-        method_option :user, :aliases => "-u", :required => true
-        method_option :password, :aliases => "-p", :required => true
-      end
+    class App < Base
 
       def self.app_name_option(desc = nil)
         desc ||= "The name of the application or instance of the application, in the form: application_name[/instance_name]"
@@ -54,25 +46,8 @@ module FMSAdmin
         puts "unload #{options.inspect}"
       end
 
-      protected
-
-      def self.basename
-        super + ' app'
-      end
-      
     end
 
   end
 end
 
-module FMSAdmin
-
-  class CLI < Thor
-
-    register FMSAdmin::Command::App, :app, "app", "Manager applications and instances"
-
-  end
-
-end
-
-FMSAdmin::CLI.start
