@@ -15,7 +15,7 @@ module FMSAdmin
       URI("http://#{@host}/admin/getApps?auser=#{@user}&apswd=#{@password}")
     end
 
-    def get_apps
+    def get_apps(force = false)
       Net::HTTP.get(url)
     end
 

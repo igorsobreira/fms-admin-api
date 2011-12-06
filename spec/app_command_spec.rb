@@ -17,6 +17,19 @@ describe 'AppCommand' do
       cli.invoke(FMSAdmin::Command::App, args)
     end
 
+    it 'should build the correct url using force' do
+      stub_request(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=true&verbose=true")
+      
+      args = ["list"]
+      options = ["--host=fms.example.com:1111", 
+                 "--user=fms", 
+                 "--password=secret",
+                 "--force"]
+
+      cli = FMSAdmin::CLI.new(args, options)
+      cli.invoke(FMSAdmin::Command::App, args)
+    end
+
   end
 
 end
