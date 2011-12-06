@@ -1,4 +1,0 @@
- - fix `require`s...
- - add a generic way to register sub commands
- - `basename` method is not generic yet
- - create Gemset
