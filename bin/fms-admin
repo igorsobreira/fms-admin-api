@@ -1,18 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'thor'
-require 'thor/group'
-require_relative '../lib/command/app'
-
-module FMSAdmin
-
-  class CLI < Thor
-
-    desc "app", "Manager applications and instances"
-    subcommand "app", FMSAdmin::Command::App
-
-  end
-
-end
+require_relative '../lib/cli'
 
 FMSAdmin::CLI.start
