@@ -55,4 +55,15 @@ describe 'AppCommand' do
       ["app", "stats", options].should build_url("http://fms.example.com:1111/admin/getAppStats?apswd=secret&auser=fms&app=live")    
     end
   end
+
+  describe 'unload' do
+    it 'should build the correct url' do
+    options =   ["--host=fms.example.com:1111", 
+                 "--user=fms", 
+                 "--password=secret",
+                 "--app=live"]
+
+      ["app", "unload", options].should build_url("http://fms.example.com:1111/admin/unloadApp?apswd=secret&auser=fms&appInst=live")    
+    end
+  end  
 end
