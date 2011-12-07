@@ -48,6 +48,14 @@ module FMSAdmin
         puts "unload #{options.inspect}"
       end
 
+      desc "stats", "Gets aggregate performance data for all instances of the specified application"
+      basic_options
+      app_name_option
+      def stats
+        client = FMSAdmin::Client.new(options.host, options.user, options.password)
+        puts client.get_app_stats(options.app)
+      end
+
     end
 
   end

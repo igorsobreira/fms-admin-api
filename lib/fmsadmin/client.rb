@@ -31,6 +31,10 @@ module FMSAdmin
       Net::HTTP.get(build_url('reloadApp', {:appInst => app}))
     end
 
+    def get_app_stats(app)
+      Net::HTTP.get(build_url('getAppStats', {:app => app}))
+    end
+
     private
 
     def build_url(method, extra_params = {})
