@@ -1,7 +1,7 @@
 $:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 
 require 'webmock/rspec'
-require 'cli'
+require 'fmsadmin/cli'
 
 def invoke_command(command, subcommand, options)
   args = [subcommand]

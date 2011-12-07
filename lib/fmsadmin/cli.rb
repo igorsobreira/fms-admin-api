@@ -1,6 +1,7 @@
 require 'thor'
 require 'thor/group'
-require_relative 'command/app'
+
+require 'fmsadmin/command'
 
 module FMSAdmin
 

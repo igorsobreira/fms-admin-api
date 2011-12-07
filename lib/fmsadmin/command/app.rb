@@ -1,5 +1,4 @@
-require_relative './base'
-require_relative '../client.rb'
+require 'fmsadmin/client.rb'
 
 module FMSAdmin
   module Command

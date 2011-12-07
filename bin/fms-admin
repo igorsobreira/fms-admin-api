@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
+$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 
-require_relative '../lib/cli'
+require 'fmsadmin/cli'
 
 FMSAdmin::CLI.start
