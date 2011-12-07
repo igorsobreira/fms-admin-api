@@ -24,13 +24,17 @@ module FMSAdmin
       if verbose
         extra_params[:verbose] = "true"
       end
-      Net::HTTP.get(build_url(extra_params))
+      Net::HTTP.get(build_url('getApps', extra_params))
+    end
+
+    def reload_app(app)
+      Net::HTTP.get(build_url('reloadApp', {:appInst => app}))
     end
 
     private
 
-    def build_url(extra_params = {})
-      url = URI("http://#{@host}/admin/getApps")
+    def build_url(method, extra_params = {})
+      url = URI("http://#{@host}/admin/#{method}")
       url.query = URI.encode_www_form(@params.merge(extra_params))
       url
     end

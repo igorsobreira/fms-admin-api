@@ -37,7 +37,8 @@ module FMSAdmin
       basic_options
       app_name_option
       def reload
-        puts "reload #{options.inspect}"
+        client = FMSAdmin::Client.new(options.host, options.user, options.password)
+        puts client.reload_app(options.app)
       end
 
       desc "unload", "Shuts down all instances of the specified application or instance of an application"

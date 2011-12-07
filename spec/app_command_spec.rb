@@ -33,4 +33,16 @@ describe 'AppCommand' do
 
   end
 
+  describe 'reload' do
+    
+    it 'should build the correct url' do
+      options = ["--host=fms.example.com:1111",
+                 "--user=fms",
+                 "--password=secret",
+                 "--app=live"]
+      ["app", "reload", options].should build_url("http://fms.example.com:1111/admin/reloadApp?apswd=secret&auser=fms&appInst=live")
+    end
+
+  end
+
 end

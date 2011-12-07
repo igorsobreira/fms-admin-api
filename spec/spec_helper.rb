@@ -21,6 +21,8 @@ end
 # The sad thing is that there is no way to get the requested
 # url from WebMock API, so I parse the exception string...
 #
+# FIXME: should fail if any request is sent
+#
 RSpec::Matchers.define :build_url do |expected|
   match do |actual|
     matched = true
