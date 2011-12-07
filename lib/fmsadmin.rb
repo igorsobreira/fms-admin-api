@@ -1,3 +1,6 @@
 
 require 'fmsadmin/cli'
-require 'fmsadmin/command/base'
+require 'fmsadmin/command'
+
+module FMSAdmin
+end
