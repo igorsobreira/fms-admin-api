@@ -11,5 +11,9 @@ This project is under development, we plan to provide:
  * A client to FMS REST API in ruby
  * A command line interface
 
+Note: master is freezed!
+------------------------
+
+A approach is being implemented in `newapi` branch, check it out!
 
 [fmsapi]: http://help.adobe.com/en_US/flashmediaserver/adminapi/WSa4cb07693d12388431df580a12a34991ebc-8000.html
