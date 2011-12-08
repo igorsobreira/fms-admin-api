@@ -31,6 +31,10 @@ module FMSAdmin
       Net::HTTP.get(build_url('addApp', {:app => app}))
     end
 
+    def remove_app(app)
+      Net::HTTP.get(build_url('removeApp', {:appName => app}))
+    end
+
     def reload_app(app)
       Net::HTTP.get(build_url('reloadApp', {:appInst => app}))
     end

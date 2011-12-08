@@ -49,6 +49,17 @@ class AppCommandTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/addApp?apswd=secret&auser=fms&app=live")
   end
 
+  # app remove
+
+  def test_add_command_should_build_correct_url
+    options = ["--host=fms.example.com:1111",
+               "--user=fms",
+               "--password=secret",
+               "--app=live"]
+    invoke_command('app', 'remove', options)
+    assert_requested(:get, "http://fms.example.com:1111/admin/removeApp?apswd=secret&auser=fms&appName=live")
+  end
+
   # app reload
 
   def test_reload_command_should_build_correct_url

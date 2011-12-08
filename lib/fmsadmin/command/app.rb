@@ -28,7 +28,7 @@ module FMSAdmin
       basic_options
       app_name_option
       def remove
-        puts "remove #{options.inspect}"
+        puts fms_client.remove_app(options.app)
       end
 
       desc "reload",  "Shuts down an instance of the application, if running, and reloads it"
