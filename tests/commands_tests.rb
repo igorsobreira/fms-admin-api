@@ -1,6 +1,6 @@
 require 'tests_helper'
 
-class AppCommandTests < BaseTestCase
+class CommandsTests < BaseTestCase
 
   def setup
     stub_request(:get, /.*/)
@@ -10,86 +10,74 @@ class AppCommandTests < BaseTestCase
     WebMock.reset!
   end
 
-  # app list
-
-  def test_list_command_should_build_correct_url
+  def test_list_apps_command_should_build_correct_url
     options = ["--host=fms.example.com:1111", 
                "--user=fms", 
                "--password=secret"]
-    invoke_command('app', 'list', options)
-    assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=false&verbose=true")    
+    invoke_command(:list_apps, options)
+    assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=false&verbose=true")
   end
 
-  def test_list_command_should_build_correct_url_using_force_and_verbose_is_implicit
+  def test_list_apps_command_should_build_correct_url_using_force_and_verbose_is_implicit
     options = ["--host=fms.example.com:1111", 
                "--user=fms", 
                "--password=secret",
                "--force"]    
-    invoke_command('app', 'list', options)
+    invoke_command(:list_apps, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=true&verbose=true")    
   end
 
-  def test_list_command_should_build_correct_url_using_verbose
+  def test_list_apps_command_should_build_correct_url_using_verbose
     options = ["--host=fms.example.com:1111",
                "--user=fms",
                "--password=secret",
                "--verbose"]
-    invoke_command('app', 'list', options)
+    invoke_command(:list_apps, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=false&verbose=true")
   end
 
-  # app add
-
-  def test_add_command_should_build_correct_url
+  def test_add_app_command_should_build_correct_url
     options = ["--host=fms.example.com:1111",
                "--user=fms",
                "--password=secret",
                "--app=live"]
-    invoke_command('app', 'add', options)
+    invoke_command(:add_app, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/addApp?apswd=secret&auser=fms&app=live")
   end
 
-  # app remove
-
-  def test_add_command_should_build_correct_url
+  def test_remove_app_command_should_build_correct_url
     options = ["--host=fms.example.com:1111",
                "--user=fms",
                "--password=secret",
                "--app=live"]
-    invoke_command('app', 'remove', options)
+    invoke_command(:remove_app, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/removeApp?apswd=secret&auser=fms&appName=live")
   end
 
-  # app reload
-
-  def test_reload_command_should_build_correct_url
+  def test_reload_app_command_should_build_correct_url
     options = ["--host=fms.example.com:1111",
                "--user=fms",
                "--password=secret",
                "--app=live"]
-    invoke_command('app', 'reload', options)
+    invoke_command(:reload_app, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/reloadApp?apswd=secret&auser=fms&appInst=live")
   end
 
-  # app stats
-
-  def test_stats_command_should_build_the_correct_url
+  def test_app_stats_command_should_build_the_correct_url
     options = ["--host=fms.example.com:1111", 
                "--user=fms", 
                "--password=secret",
                "--app=live"]
-    invoke_command('app', 'stats', options)
+    invoke_command(:app_stats, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/getAppStats?apswd=secret&auser=fms&app=live")
   end
 
-  # app unload
-
-  def test_unload_command_should_build_correct_url
+  def test_unload_app_command_should_build_correct_url
     options =   ["--host=fms.example.com:1111", 
                  "--user=fms", 
                  "--password=secret",
                  "--app=live"]
-    invoke_command('app', 'unload', options)
+    invoke_command(:unload_app, options)
     assert_requested(:get, "http://fms.example.com:1111/admin/unloadApp?apswd=secret&auser=fms&appInst=live")
   end
 
