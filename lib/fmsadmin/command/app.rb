@@ -2,7 +2,6 @@ require 'fmsadmin/client.rb'
 
 module FMSAdmin
   module Command
-
     class App < Base
 
       def self.app_name_option(desc = nil)
@@ -23,7 +22,7 @@ module FMSAdmin
       basic_options
       app_name_option "The name of the application to be added."
       def add
-        puts "add #{options.inspect}"
+        fms_client.add_app(options.app)
       end
 
       desc "remove", "remove application"
@@ -57,8 +56,13 @@ module FMSAdmin
         puts client.get_app_stats(options.app)
       end
 
-    end
+      no_tasks do
+        def fms_client
+          FMSAdmin::Client.new(options.host, options.user, options.password)
+        end
+      end
 
+    end
   end
 end
 

@@ -10,6 +10,8 @@ class AppCommandTests < BaseTestCase
     WebMock.reset!
   end
 
+  # app list
+
   def test_list_command_should_build_correct_url
     options = ["--host=fms.example.com:1111", 
                "--user=fms", 
@@ -36,6 +38,19 @@ class AppCommandTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=secret&auser=fms&force=false&verbose=true")
   end
 
+  # app add
+
+  def test_add_command_should_build_correct_url
+    options = ["--host=fms.example.com:1111",
+               "--user=fms",
+               "--password=secret",
+               "--app=live"]
+    invoke_command('app', 'add', options)
+    assert_requested(:get, "http://fms.example.com:1111/admin/addApp?apswd=secret&auser=fms&app=live")
+  end
+
+  # app reload
+
   def test_reload_command_should_build_correct_url
     options = ["--host=fms.example.com:1111",
                "--user=fms",
@@ -45,6 +60,8 @@ class AppCommandTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/reloadApp?apswd=secret&auser=fms&appInst=live")
   end
 
+  # app stats
+
   def test_stats_command_should_build_the_correct_url
     options = ["--host=fms.example.com:1111", 
                "--user=fms", 
@@ -53,6 +70,8 @@ class AppCommandTests < BaseTestCase
     invoke_command('app', 'stats', options)
     assert_requested(:get, "http://fms.example.com:1111/admin/getAppStats?apswd=secret&auser=fms&app=live")
   end
+
+  # app unload
 
   def test_unload_command_should_build_correct_url
     options =   ["--host=fms.example.com:1111", 
