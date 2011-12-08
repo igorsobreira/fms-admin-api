@@ -22,7 +22,7 @@ module FMSAdmin
     method_option :force, :aliases => "-f", :type => :boolean, :default => false, :desc => "Forces a refresh of the cached list of applications"
     method_option :verbose, :aliases => "-v", :type => :boolean, :default => true, :desc => "true displays all the applications under a virtual host; false displays the total number of applications"
     def list_apps
-      puts fms_client.get_apps(options.force, options.verbose)
+      puts fms_client.list_apps(options.force, options.verbose)
     end
 
     desc "add-app", "Adds a new application to the virtual host you are connected to by creating the required directory for the new application in the directory tree"

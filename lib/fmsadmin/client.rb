@@ -12,7 +12,7 @@ module FMSAdmin
       }
     end
 
-    def get_apps(force = false, verbose = true)
+    def list_apps(force = false, verbose = true)
       extra_params = {
         :force => "false",
         :verbose => "false",
@@ -24,34 +24,38 @@ module FMSAdmin
       if verbose
         extra_params[:verbose] = "true"
       end
-      Net::HTTP.get(build_url('getApps', extra_params))
+      do_get 'getApps', extra_params
     end
 
     def add_app(app)
-      Net::HTTP.get(build_url('addApp', {:app => app}))
+      do_get 'addApp', {:app => app}
     end
 
     def remove_app(app)
-      Net::HTTP.get(build_url('removeApp', {:appName => app}))
+      do_get 'removeApp', {:appName => app}
     end
 
     def reload_app(app)
-      Net::HTTP.get(build_url('reloadApp', {:appInst => app}))
+      do_get 'reloadApp', {:appInst => app}
     end
 
     def get_app_stats(app)
-      Net::HTTP.get(build_url('getAppStats', {:app => app}))
+      do_get 'getAppStats', {:app => app}
     end
 
     def unload_app(app)
-      Net::HTTP.get(build_url('unloadApp', {:appInst => app}))
+      do_get 'unloadApp', {:appInst => app}
     end
 
     def live_streams(app)
-      Net::HTTP.get(build_url('getLiveStreams', {:appInst => app}))
+      do_get 'getLiveStreams', {:appInst => app}
     end
 
     private
+
+    def do_get(action, options)
+      Net::HTTP.get(build_url(action, options))
+    end
 
     def build_url(method, extra_params = {})
       url = URI("http://#{@host}/admin/#{method}")
