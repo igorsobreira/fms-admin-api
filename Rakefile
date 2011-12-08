@@ -1,8 +1,11 @@
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 
-RSpec::Core::RakeTask.new(:test) do |spec|
-  spec.pattern = 'spec/*_spec.rb'
-  spec.rspec_opts = ['--color', '--format d']
+task :default => :test
+
+Rake::TestTask.new do |t|
+  puts 'running tests'
+  t.libs << 'lib'
+  t.libs << 'tests'
+  t.test_files = FileList['tests/*_tests.rb', 'tests/*_test.rb']
+  t.verbose = true
 end
-
-

@@ -1,4 +1,4 @@
-require_relative './tests_helper'
+require 'tests_helper'
 
 class AppCommandTests < BaseTestCase
 
