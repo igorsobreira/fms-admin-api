@@ -24,7 +24,7 @@ module FMSAdmin
         puts fms_client.add_app(options.app)
       end
 
-      desc "remove", "remove application"
+      desc "remove", "Removes the specified application or instance of an application from the virtual host"
       basic_options
       app_name_option
       def remove
