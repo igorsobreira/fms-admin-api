@@ -14,15 +14,14 @@ module FMSAdmin
       method_option :force, :aliases => "-f", :type => :boolean, :default => false, :desc => "Forces a refresh of the cached list of applications"
       method_option :verbose, :aliases => "-v", :type => :boolean, :default => true, :desc => "true displays all the applications under a virtual host; false displays the total number of applications"
       def list
-        client = FMSAdmin::Client.new(options.host, options.user, options.password)
-        puts client.get_apps(options.force, options.verbose)
+        puts fms_client.get_apps(options.force, options.verbose)
       end
 
       desc "add", "Adds a new application to the virtual host you are connected to by creating the required directory for the new application in the directory tree"
       basic_options
       app_name_option "The name of the application to be added."
       def add
-        fms_client.add_app(options.app)
+        puts fms_client.add_app(options.app)
       end
 
       desc "remove", "remove application"
@@ -36,24 +35,21 @@ module FMSAdmin
       basic_options
       app_name_option
       def reload
-        client = FMSAdmin::Client.new(options.host, options.user, options.password)
-        puts client.reload_app(options.app)
+        puts fms_client.reload_app(options.app)
       end
 
       desc "unload", "Shuts down all instances of the specified application or instance of an application"
       basic_options
       app_name_option
       def unload
-        client = FMSAdmin::Client.new(options.host, options.user, options.password)
-        puts client.unload_app(options.app)
+        puts fms_client.unload_app(options.app)
       end
 
       desc "stats", "Gets aggregate performance data for all instances of the specified application"
       basic_options
       app_name_option
       def stats
-        client = FMSAdmin::Client.new(options.host, options.user, options.password)
-        puts client.get_app_stats(options.app)
+        puts fms_client.get_app_stats(options.app)
       end
 
       no_tasks do
