@@ -13,7 +13,7 @@ module FMS
       end
     end
 
-    attr_reader :host, :port, :user, :password
+    attr_reader :host, :port, :params
 
     def initialize(host, user, password, port = 1111)
       @host = host
