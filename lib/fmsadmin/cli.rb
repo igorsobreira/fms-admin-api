@@ -60,6 +60,13 @@ module FMSAdmin
       puts fms_client.get_app_stats(options.app)
     end
 
+    desc "live-streams", "Show all live streams names being published to a specific instance"
+    basic_options
+    app_name_option "The name of the instance of an application, in the form: application_name[/instance_name]"
+    def live_streams
+      puts fms_client.live_streams(options.app)
+    end
+
     no_tasks do
       def fms_client
         FMSAdmin::Client.new(options.host, options.user, options.password)

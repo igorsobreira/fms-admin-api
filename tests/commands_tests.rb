@@ -81,4 +81,13 @@ class CommandsTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/unloadApp?apswd=secret&auser=fms&appInst=live")
   end
 
+  def test_live_streams_command_should_build_correct_url
+    options = ["--host=fms.example.com:1111",
+               "--user=fms",
+               "--password=secret",
+               "--app=live/cam1"]
+    invoke_command(:live_streams, options)
+    assert_requested(:get, "http://fms.example.com:1111/admin/getLiveStreams?apswd=secret&auser=fms&appInst=live/cam1")
+  end
+
 end

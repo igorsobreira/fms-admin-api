@@ -47,6 +47,10 @@ module FMSAdmin
       Net::HTTP.get(build_url('unloadApp', {:appInst => app}))
     end
 
+    def live_streams(app)
+      Net::HTTP.get(build_url('getLiveStreams', {:appInst => app}))
+    end
+
     private
 
     def build_url(method, extra_params = {})
