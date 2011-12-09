@@ -20,7 +20,7 @@ Client usage
                              :auser => 'fms',
                              :apswd => 'secret')  # you can use :port here, 1111 is default
 
-now just call any method defined in the [API][fmsapi]:
+now just call any method defined in the [FMS Admin API][fmsapi]:
 
     client.reload_app(:app_inst => 'live/cam1')
     client.get_apps(:force => true, :verbose => true)
