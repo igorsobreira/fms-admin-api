@@ -1,14 +1,6 @@
 require 'tests_helper'
 
-class ApiMethodTests < BaseTestCase
-  
-  def setup
-    stub_request(:get, /.*/)
-  end
-
-  def teardown
-    WebMock.reset!
-  end
+class ClientTests < BaseTestCase
 
   def test_should_require_host_parameter_and_provide_defaults_to_others
     c = FMS::Client.new(:host => "fms.example.com")
