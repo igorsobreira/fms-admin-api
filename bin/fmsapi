@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
+
+require 'fms'
+
+FMS::CmdLine.parse(ARGV)
+
+cli(ARGV) if $0 == __FILE__
