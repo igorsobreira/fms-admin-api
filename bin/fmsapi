@@ -5,6 +5,5 @@ $:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 require 'fms'
 
 if $0 == __FILE__
-  cmd = FMS::CmdLine.new(ARGV)
-  cmd.parse
+  FMS::CmdLine.parse(ARGV) # TODO: test this entry point
 end

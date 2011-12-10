@@ -1,16 +1,24 @@
 require 'tests_helper'
 
-class FMS::CmdLine
-  attr_accessor :stderr
-
-  def show_error(msg)
-    @stderr = [] unless @stderr
-    @stderr << msg
+module FMS::CmdLine::Output
+  def self.flush
+    [@@buffer_stdout, @@buffer_stderr]
   end
 
+  def self.clear
+    @@buffer_stderr = []
+    @@buffer_stdout = []
+  end
 end
 
 class CommandLineTests < BaseTestCase
+
+  # TODO: test mocked outputs
+
+  def teardown
+    super
+    FMS::CmdLine::Output.clear
+  end
 
   def test_should_call_method_based_on_command
     run_command ['get_apps', '--host=fms.example.com']
@@ -45,18 +53,13 @@ class CommandLineTests < BaseTestCase
     assert_invalid_command
   end
 
-  def test_show_error_msg_if_malformed_options
+  def test_options_should_use_equal_sign_to_define_its_value
     run_command ["get_apps", "--force", "true"]
     assert_invalid_command
   end
 
   def run_command(argv)
-    @cmd = FMS::CmdLine.new(argv)
-    @cmd.parse
-  end
-
-  def command_stderr
-    @cmd.stderr
+    FMS::CmdLine.parse(argv)
   end
 
   def stub_request_to_404(url)
@@ -65,7 +68,8 @@ class CommandLineTests < BaseTestCase
   end
 
   def assert_command_stderr_contains(msg)
-    assert_includes(command_stderr, msg)
+    cmd_stdout, cmd_stderr = FMS::CmdLine::Output.flush
+    assert_includes(cmd_stderr, msg)
   end
 
   def assert_invalid_command

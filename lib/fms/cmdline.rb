@@ -1,78 +1,117 @@
 
 module FMS
-  class CmdLine
 
-    @@command_regex = /^[a-z_]+$/
-    
-    def initialize(argv)
-      @argv = argv
-    end
-
-    def parse
-      command = parse_command @argv.shift
-      if !command
-        show_error 'Invalid command format. See help.'
-        return
+  module CmdLine
+    class << self
+      
+      def parse(argv)
+        method = MethodParser.parse(argv)
+        params = ParamsParser.parse(argv)
+        call_if_possible method, params
+        Output.flush
       end
-      params = parse_params(@argv)
-      fire_method(command, params)
-    end
 
-    def parse_command(cmd)
-      cmd if @@command_regex.match(cmd)
-    end
-    
-    def parse_params(args)
-      params = {}
-      args.each do |arg|
-        param, value = parse_param(arg)
-        params[param.to_sym] = value
-      end
-      params
-    end
-
-    def parse_param(arg)
-      m = /--(.*)=(.*)/.match(arg)
-      m.captures if m
-    end
-
-    def fire_method(command, params)
-      init_params, meth_params = split_params(params)
-      begin
-        client = FMS::Client.new(init_params)
-        show_output client.send(command, meth_params)
-      rescue ArgumentError => error
-        show_error(error.message.gsub(':', '--'))
-      rescue NoMethodError => error
-        show_error(error.message)
-      end
-    end
-
-    def split_params(params)
-      init_params = {}
-      meth_params = {}
-      init_params_names = [:host, :port, :auser, :apswd]
-      params.each_pair do |param, value|
-        if init_params_names.include? param
-          init_params[param] = value
+      def call_if_possible(method, params)
+        if method and params
+          call_method method, params
         else
-          meth_params[param] = value
+          Output.stderr 'Invalid command format. See help.'
         end
       end
-      [init_params, meth_params]
+
+      def call_method(method, params)
+        MethodCaller.call method, params
+      end
+
     end
 
-    def show_output(msg)
-      puts msg
+    module MethodParser
+      class << self
+ 
+        def parse(argv)
+          method = argv.shift
+          return nil unless method
+          return nil unless /^[a-z_]+$/.match(method)
+          method
+        end
+
+      end
     end
 
-    def show_error(msg)
-      puts msg
-      show_help
+    module ParamsParser
+      class << self
+        
+        def parse(argv)
+          params = {}
+          argv.each do |rawparam|
+            param = parse_rawparam rawparam
+            params.update(param) if param
+          end
+          return nil if params.length != argv.length
+          params
+        end
+
+        def parse_rawparam(raw)
+          m = /--(.*)=(.*)/.match(raw)
+          {m[1].to_sym => m[2]} if m
+        end
+
+      end
     end
 
-    def show_help
-      # TODO
+    module MethodCaller
+      class << self
+
+        def call(method, params)
+          init_params = filter_init_params params
+          begin
+            c = FMS::Client.new(init_params)
+            Output.stdout c.send(method.to_sym, params)
+          rescue ArgumentError => error
+            Output.stderr error.message.gsub(':','--')
+          rescue NoMethodError => error
+            Output.stderr error.message
+          end
+        end
+
+        def filter_init_params(params)
+          init_params = {}
+          params.each_pair do |key,value| 
+            if init_param? key
+              init_params[key] = value
+              params.delete key
+            end
+          end
+          init_params
+        end
+        
+        def init_param?(param)
+          [:host, :port, :auser, :apswd].include? param
+        end
+
+      end
+    end
+
+    module Output
+      class << self
+        
+        @@buffer_stdout = []
+        @@buffer_stderr = []
+
+        def stdout(out)
+          @@buffer_stdout << out
+        end
+
+        def stderr(err)
+          @@buffer_stderr << err
+        end
+
+        def flush
+          puts @@buffer_stdout
+          puts @@buffer_stderr
+        end
+
+      end
     end
 
   end
