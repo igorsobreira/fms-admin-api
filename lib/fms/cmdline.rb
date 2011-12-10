@@ -33,6 +33,8 @@ module FMS
         show_output client.send(command, meth_params)
       rescue ArgumentError => error
         show_error(error.message.gsub(':', '--'))
+      rescue NoMethodError => error
+        show_error(error.message)
       end
     end
 

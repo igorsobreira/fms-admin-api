@@ -30,7 +30,9 @@ module FMS
     private 
 
     def do_get(action, params = {})
-      Net::HTTP.get(build_url(action, params))
+      resp = Net::HTTP.get_response(build_url(action, params))
+      raise NoMethodError, "#{action.inspect} is not a valid API method" unless resp.code == "200"
+      resp.body
     end
     
     def build_url(method, extra_params = {})

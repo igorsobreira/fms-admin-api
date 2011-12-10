@@ -28,6 +28,12 @@ class CommandLineTests < BaseTestCase
     assert_command_stderr_contains("--host option is required")
   end
 
+  def test_should_show_help_if_invalid_command
+    stub_request_to_404 "http://fms.nonexistent.com:1111/admin/invalidCommand?apswd=fms&auser=fms"
+    run_command ["invalid_command", "--host=fms.nonexistent.com"]
+    assert_requested(:get, "http://fms.nonexistent.com:1111/admin/invalidCommand?apswd=fms&auser=fms")
+    assert_command_stderr_contains('"invalidCommand" is not a valid API method')
+  end
 
   def run_command(argv)
     @cmd = FMS::CmdLine.new(argv)
@@ -36,6 +42,11 @@ class CommandLineTests < BaseTestCase
 
   def command_stderr
     @cmd.stderr
+  end
+
+  def stub_request_to_404(url)
+    WebMock.reset!
+    stub_request(:get, url).to_return(:status => 404)
   end
 
   def assert_command_stderr_contains(msg)
