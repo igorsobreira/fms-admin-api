@@ -1,18 +1,28 @@
 
 module FMS
   class CmdLine
+
+    @@command_regex = /^[a-z_]+$/
     
     def initialize(argv)
       @argv = argv
     end
 
     def parse
-      command = @argv.shift
-      params = build_params(@argv)
+      command = parse_command @argv.shift
+      if !command
+        show_error 'Invalid command format. See help.'
+        return
+      end
+      params = parse_params(@argv)
       fire_method(command, params)
     end
+
+    def parse_command(cmd)
+      cmd if @@command_regex.match(cmd)
+    end
     
-    def build_params(args)
+    def parse_params(args)
       params = {}
       args.each do |arg|
         param, value = parse_param(arg)
@@ -62,6 +72,7 @@ module FMS
     end
 
     def show_help
+      # TODO
     end
 
   end

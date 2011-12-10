@@ -35,6 +35,21 @@ class CommandLineTests < BaseTestCase
     assert_command_stderr_contains('"invalidCommand" is not a valid API method')
   end
 
+  def test_show_error_msg_if_no_command_nor_options_provided
+    run_command []
+    assert_invalid_command
+  end
+
+  def test_show_error_msg_if_options_informed_before_command
+    run_command ["--options-first=foo", "get_apps"]
+    assert_invalid_command
+  end
+
+  def test_show_error_msg_if_malformed_options
+    run_command ["get_apps", "--force", "true"]
+    assert_invalid_command
+  end
+
   def run_command(argv)
     @cmd = FMS::CmdLine.new(argv)
     @cmd.parse
@@ -51,6 +66,11 @@ class CommandLineTests < BaseTestCase
 
   def assert_command_stderr_contains(msg)
     assert_includes(command_stderr, msg)
+  end
+
+  def assert_invalid_command
+    assert_not_requested(:get, /.*/)
+    assert_command_stderr_contains("Invalid command format. See help.")
   end
 
 end
