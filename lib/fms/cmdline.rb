@@ -1,14 +1,18 @@
 
 module FMS
-  module CmdLine
+  class CmdLine
     
-    def self.parse(args)
-      command = args.shift
-      params = build_params(args)
+    def initialize(argv)
+      @argv = argv
+    end
+
+    def parse
+      command = @argv.shift
+      params = build_params(@argv)
       fire_method(command, params)
     end
     
-    def self.build_params(args)
+    def build_params(args)
       params = {}
       args.each do |arg|
         param, value = parse_param(arg)
@@ -17,18 +21,22 @@ module FMS
       params
     end
 
-    def self.parse_param(arg)
+    def parse_param(arg)
       m = /--(.*)=(.*)/.match(arg)
       m.captures if m
     end
 
-    def self.fire_method(command, params)
+    def fire_method(command, params)
       init_params, meth_params = split_params(params)
-      client = FMS::Client.new(init_params)
-      puts client.send(command, meth_params)
+      begin
+        client = FMS::Client.new(init_params)
+        show_output client.send(command, meth_params)
+      rescue ArgumentError => error
+        show_error(error.message.gsub(':', '--'))
+      end
     end
 
-    def self.split_params(params)
+    def split_params(params)
       init_params = {}
       meth_params = {}
       init_params_names = [:host, :port, :auser, :apswd]
@@ -40,6 +48,18 @@ module FMS
         end
       end
       [init_params, meth_params]
+    end
+
+    def show_output(msg)
+      puts msg
+    end
+
+    def show_error(msg)
+      puts msg
+      show_help
+    end
+
+    def show_help
     end
 
   end
