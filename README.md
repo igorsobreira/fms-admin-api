@@ -3,16 +3,23 @@ Flash Media Server Administration API
 
 Command line interface to [Flash Media Server Administration API][fmsapi]:
 
-Don't use yet... contribute!
-----------------------------
+Usage
+-----
 
-This project is under development, we plan to provide:
+    $ fmsapi <method_name> --host=<fms host> [other params]
 
- * A client to FMS REST API in ruby
- * A command line interface
+Just pick a method from the [documentation][fmsapi] and replace convention 
+from camelCase to underscore_case (same for the parameters)
 
-Client usage
-------------
+Example:
+
+    $ fmsapi reload_app --host=fms.example.com --auser=fms --apswd=secret --app_inst=live
+
+
+Ruby client usage
+-----------------
+
+You can use the ruby client directly on you code:
 
     require 'fms'
 
