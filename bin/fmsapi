@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
-
 require 'fms'
 
-if $0 == __FILE__
-  FMS::CmdLine.parse(ARGV) # TODO: test this entry point
-end
+FMS::CmdLine.parse(ARGV)
