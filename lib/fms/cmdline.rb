@@ -1,3 +1,4 @@
+require 'colorize'
 
 module FMS
 
@@ -110,7 +111,7 @@ module FMS
         end
 
         def help_message
-          stdout "\nCommand line interface to Flash Media Server Administration API\n"
+          stdout "\nCommand line interface to Flash Media Server Administration API"
           stdout "\nUsage:"
           stdout "\n $ fmsapi <method_name> --host=<fms host> [other params]"
           stdout "\nJust pick a method from the documentation and replace convention "
@@ -130,8 +131,8 @@ module FMS
         end
 
         def flush
-          puts @@buffer_stderr
-          puts @@buffer_stdout
+          puts @@buffer_stderr.join("\n").red
+          puts @@buffer_stdout.join("\n")
         end
 
       end

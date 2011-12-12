@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "activesupport"
+  s.add_runtime_dependency "colorize"
   s.add_development_dependency "webmock"
 end
