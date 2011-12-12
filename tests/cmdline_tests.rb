@@ -58,6 +58,11 @@ class CommandLineTests < BaseTestCase
     assert_invalid_command
   end
 
+  def test_help_command_should_show_usage_format
+    run_command ["help"]
+    assert_help_message
+  end
+
   def run_command(argv)
     FMS::CmdLine.parse(argv)
   end
@@ -72,9 +77,21 @@ class CommandLineTests < BaseTestCase
     assert_includes(cmd_stderr, msg)
   end
 
+  def assert_command_stdout_contains(msg)
+    cmd_stdout, cmd_stderr = FMS::CmdLine::Output.flush
+    assert_includes(cmd_stdout, msg)
+  end
+
   def assert_invalid_command
     assert_not_requested(:get, /.*/)
-    assert_command_stderr_contains("Invalid command format. See help.")
+    assert_command_stderr_contains("Invalid command format.")
+    assert_help_message
+  end
+
+  def assert_help_message
+    assert_not_requested(:get, /.*/)
+    assert_command_stdout_contains("\nUsage:")
+    assert_command_stdout_contains("\nExample:")
   end
 
 end

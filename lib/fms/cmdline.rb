@@ -12,15 +12,22 @@ module FMS
       end
 
       def call_if_possible(method, params)
+        return Output.help_message if help_method? method
+
         if method and params
           call_method method, params
         else
-          Output.stderr 'Invalid command format. See help.'
+          Output.invalid_command
+          Output.help_message
         end
       end
 
       def call_method(method, params)
         MethodCaller.call method, params
+      end
+
+      def help_method?(method)
+        method == "help"
       end
 
     end
@@ -98,6 +105,22 @@ module FMS
         @@buffer_stdout = []
         @@buffer_stderr = []
 
+        def invalid_command
+          stderr "Invalid command format."
+        end
+
+        def help_message
+          stdout "\nCommand line interface to Flash Media Server Administration API\n"
+          stdout "\nUsage:"
+          stdout "\n $ fmsapi <method_name> --host=<fms host> [other params]"
+          stdout "\nJust pick a method from the documentation and replace convention "
+          stdout "from camelCase to underscore_case (same for the parameters)"
+          stdout "\nExample:"
+          stdout "\n $ fmsapi reload_app --host=fms.example.com --auser=fms --apswd=secret --app_inst=live"
+          stdout "\nFMS Admin API documentation: #{FMS::Docs}"
+          stdout "This project documentation: http://github.com/igorsobreira/fms-admin-api"
+        end
+
         def stdout(out)
           @@buffer_stdout << out
         end
@@ -107,8 +130,8 @@ module FMS
         end
 
         def flush
-          puts @@buffer_stdout
           puts @@buffer_stderr
+          puts @@buffer_stdout
         end
 
       end
