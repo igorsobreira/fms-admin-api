@@ -26,19 +26,36 @@ Ruby client usage
 
 You can use the ruby client directly on you code:
 
-    require 'fms'
+```ruby
+require 'fms'
 
-    client = FMS::Client.new(:host => 'fms.example.com',
-                             :auser => 'fms',
-                             :apswd => 'secret')  # you can use :port here, 1111 is default
+client = FMS::Client.new(:host => 'fms.example.com',
+                         :auser => 'fms',
+                         :apswd => 'secret')  # you can use :port here, 1111 is default
+```
 
 now just call any method defined in the [FMS Admin API][fmsapi]:
 
-    client.reload_app(:app_inst => 'live/cam1')
-    client.get_apps(:force => true, :verbose => true)
+```ruby
+client.reload_app(:app_inst => 'live/cam1')
+client.get_apps(:force => true, :verbose => true)
+```
 
 just note that the methods name and parameters are used with ruby_default_notation 
 instead of camelCase as documented.
+
+The return value from all api method calls is a `FMS::Response`, on which you may want to call `.to_xml` 
+to get a `REXML::Document` instance:
+
+```ruby
+require 'rexml/xpath'
+
+xml_resp = client.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1').to_xml
+puts REXML::XPath.first(xml_resp, '/result/data/publisher/name').text
+
+```
+
+there is also a `to_s` method on `FMS::Response`.
 
 Take a look in the tests/ folder for more detailed specification.
 
