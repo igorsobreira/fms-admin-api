@@ -6,7 +6,7 @@ Command line interface to [Flash Media Server Administration API][fmsapi]:
 Instalation
 -----------
 
-   $ gem install fms-admin-api
+    $ gem install fms-admin-api
 
 Usage
 -----
