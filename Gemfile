@@ -1,3 +1,8 @@
 source "http://rubygems.org"
 
-gemspec
+gem "activesupport", "3.1.3"
+gem "colorize", "0.5.8"
+
+group :test do
+  gem "webmock"
+end
