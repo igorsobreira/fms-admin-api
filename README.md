@@ -1,4 +1,4 @@
-Flash Media Server Administration API
+Flash Media Server Administration API ![Build status](https://secure.travis-ci.org/igorsobreira/fms-admin-api.png?branch=master)
 =====================================
 
 Command line interface to [Flash Media Server Administration API][fmsapi]:
