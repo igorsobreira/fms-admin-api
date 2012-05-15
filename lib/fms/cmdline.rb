@@ -74,7 +74,7 @@ module FMS
           init_params = filter_init_params params
           begin
             c = FMS::Client.new(init_params)
-            Output.stdout c.send(method.to_sym, params)
+            Output.stdout c.send(method.to_sym, params).to_s
           rescue ArgumentError => error
             Output.stderr error.message.gsub(':','--')
           rescue NoMethodError => error

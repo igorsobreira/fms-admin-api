@@ -63,6 +63,16 @@ class CommandLineTests < BaseTestCase
     assert_help_message
   end
 
+  def test_should_return_response_as_string
+    url = "http://fms.example.com:1111/admin/getLiveStreams?appInst=live&apswd=fms&auser=fms"
+    stub_request(:get, url).to_return(:body => GET_LIVE_STREAMS)
+
+    run_command ["get_live_streams", "--host=fms.example.com", "--app_inst=live"]
+    assert_requested(:get, url)
+    assert_command_stdout_contains GET_LIVE_STREAMS.strip
+  end
+
+
   def run_command(argv)
     FMS::CmdLine.parse(argv)
   end
@@ -95,3 +105,17 @@ class CommandLineTests < BaseTestCase
   end
 
 end
+
+GET_LIVE_STREAMS = %Q{
+<?xml version="1.0" encoding="utf-8"?>
+<result>
+  <level>status</level>
+  <code>NetConnection.Call.Success</code>
+  <timestamp>Mon May 14 22:47:45 2012</timestamp>
+  <name>_defaultRoot_:_defaultVHost_:::_0</name>
+  <data>
+    <_0>stream1</_0>
+    <_1>stream1</_2>
+  </data>
+</result>
+}

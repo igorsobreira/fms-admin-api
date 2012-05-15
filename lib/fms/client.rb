@@ -1,4 +1,5 @@
 require 'net/http'
+require 'rexml/document'
 require 'active_support'
 
 module FMS
@@ -24,17 +25,17 @@ module FMS
       else
         params = {}
       end
-      do_get(meth, camelize_params(params))
+      Response.new do_get(meth, camelize_params(params)).strip
     end
 
-    private 
+    private
 
     def do_get(action, params = {})
       resp = Net::HTTP.get_response(build_url(action, params))
       raise NoMethodError, "#{action.inspect} is not a valid API method" unless resp.code == "200"
       resp.body
     end
-    
+
     def build_url(method, extra_params = {})
       url = URI("http://#{@host}:#{@port}/admin/#{method}")
       url.query = URI.encode_www_form(@base_params.merge(extra_params))
@@ -50,4 +51,21 @@ module FMS
     end
 
   end
+
+  class Response
+
+    def initialize(content)
+      @content = content
+    end
+
+    def to_xml
+      REXML::Document.new @content
+    end
+
+    def to_s
+      @content
+    end
+
+  end
+
 end

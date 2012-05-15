@@ -1,3 +1,4 @@
+require 'rexml/xpath'
 require 'tests_helper'
 
 class ClientTests < BaseTestCase
@@ -32,4 +33,52 @@ class ClientTests < BaseTestCase
     assert_requested(:get, "http://fms.example.com:1111/admin/reloadApp?appInst=live/cam1&apswd=fms&auser=fms")
   end
 
+  def test_should_return_response_as_xml
+    url = "http://fms.example.com:1111/admin/getLiveStreamStats?appInst=live&apswd=fms&auser=fms&stream=cam1"
+    stub_request(:get, url).to_return(:body => GET_LIVE_STREAM_STATS)
+
+    c = FMS::Client.new(:host => 'fms.example.com')
+    xml_resp = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1').to_xml
+
+    assert_requested(:get, url)
+    assert_equal "cam1", REXML::XPath.first(xml_resp, '/result/data/publisher/name').text
+  end
+
+  def test_should_return_response_as_raw_string
+    url = "http://fms.example.com:1111/admin/getLiveStreamStats?appInst=live&apswd=fms&auser=fms&stream=cam1"
+    stub_request(:get, url).to_return(:body => GET_LIVE_STREAM_STATS)
+
+    c = FMS::Client.new(:host => 'fms.example.com')
+    str_resp = c.get_live_stream_stats(:app_inst => 'live', :stream => 'cam1').to_s
+
+    assert_requested(:get, url)
+    assert str_resp.include?('<name>cam1</name>')
+  end
+
 end
+
+# Stub responses
+
+GET_LIVE_STREAM_STATS = %Q{
+<?xml version="1.0" encoding="utf-8"?>
+<result>
+  <level>status</level>
+  <code>NetConnection.Call.Success</code>
+  <timestamp>Mon May 14 22:44:35 2012</timestamp>
+  <data>
+    <name>_defaultRoot_:_defaultVHost_:::_0</name>
+    <publisher>
+      <name>cam1</name>
+      <time>Mon May 14 22:43:39 2012</time>
+      <type>publishing</type>
+      <client>oAACAAAA</client>
+      <stream_id>ACACAAAA</stream_id>
+      <client_type>normal</client_type>
+      <diffserv_bits>0x0</diffserv_bits>
+      <publish_time>Mon May 14 22:43:39 2012</publish_time>
+    </publisher>
+    <subscribers>
+    </subscribers>
+  </data>
+</result>
+}
