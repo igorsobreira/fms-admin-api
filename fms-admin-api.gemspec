@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 
-require "fms"
+require "fms/version"
 
 Gem::Specification.new do |s|
   s.name        = "fms-admin-api"
@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "activesupport"
   s.add_runtime_dependency "colorize"
   s.add_development_dependency "webmock"
+  s.add_development_dependency "rake"
 end
