@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "colorize"
   s.add_development_dependency "webmock"
   s.add_development_dependency "rake"
+  s.add_development_dependency "mocha"
 end

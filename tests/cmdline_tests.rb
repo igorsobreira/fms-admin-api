@@ -72,6 +72,11 @@ class CommandLineTests < BaseTestCase
     assert_command_stdout_contains GET_LIVE_STREAMS.strip
   end
 
+  def test_should_have_timeout_option
+    run_command ['get_apps', '--host=fms.example.com', '--timeout=3']
+    assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=fms&auser=fms")
+  end
+
 
   def run_command(argv)
     FMS::CmdLine.parse(argv)

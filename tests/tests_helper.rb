@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'webmock'
+require 'mocha'
 
 require 'fms'
 

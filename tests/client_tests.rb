@@ -55,6 +55,22 @@ class ClientTests < BaseTestCase
     assert str_resp.include?('<name>cam1</name>')
   end
 
+  def test_should_use_timeout_param
+    c = FMS::Client.new(:host => 'fms.example.com', :timeout => 3)
+    c.get_apps
+    assert_requested(:get, "http://fms.example.com:1111/admin/getApps?apswd=fms&auser=fms")
+  end
+
+  def test_should_respect_timeout_param
+    httpclient_mock = mock()
+    response_stub = stub(:code => "200", :body => "")
+    FMS::HTTPClient.expects(:new).with('fms.example.com', 1111).returns(httpclient_mock)
+    httpclient_mock.expects(:get).with('/admin/getApps?auser=fms&apswd=fms', 123).returns(response_stub)
+
+    c = FMS::Client.new(:host => 'fms.example.com', :timeout => 123)
+    c.get_apps
+  end
+
 end
 
 # Stub responses

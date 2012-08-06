@@ -94,7 +94,7 @@ module FMS
         end
         
         def init_param?(param)
-          [:host, :port, :auser, :apswd].include? param
+          [:host, :port, :auser, :apswd, :timeout].include? param
         end
 
       end
