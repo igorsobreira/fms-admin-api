@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fms-admin-api (0.2)
+    fms-admin-api (0.3)
       activesupport
       colorize
 
